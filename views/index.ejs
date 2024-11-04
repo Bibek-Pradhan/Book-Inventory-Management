@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Boxicons CDN Link -->
+    <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <title>Book Management</title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><i class='bx bx-book'></i> Book Management Inventory</h1>
+            <div class="header-buttons">
+                <button onclick="window.location.href='/add-book'"><i class='bx bx-plus'></i> Add New Book</button>
+
+                <form action="/export-csv" method="get" style="display:inline;">
+                    <button type="submit" class="export-btn">
+                        <i class='bx bx-file'></i> Export CSV
+                    </button>
+                </form>
+            </div>
+        </header>
+
+        <div class="search-bar">
+            <!-- Title Search Form -->
+            <form action="/search-title" method="post" style="display:inline;">
+                <input type="text" name="title" placeholder="Search by Title..." required>
+                <button type="submit"><i class='bx bx-search'></i> Title</button>
+            </form>
+
+            <!-- Author Search Form -->
+            <form action="/search-author" method="post" style="display:inline;">
+                <input type="text" name="author" placeholder="Search by Author..." required>
+                <button type="submit"><i class='bx bx-search'></i> Author</button>
+            </form>
+
+            <!-- Genre Search Form -->
+            <form action="/search-genre" method="post" style="display:inline;">
+                <input type="text" name="genre" placeholder="Search by Genre..." required>
+                <button type="submit"><i class='bx bx-search'></i> Genre</button>
+            </form>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Entry ID</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Genre</th>
+                    <th>Publication Date</th>
+                    <th>ISBN</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% books.forEach(book => { %>
+                    <tr>
+                        <td>
+                            <%= book.Entry_ID %>
+                        </td>
+                        <td>
+                            <%= book.Title %>
+                        </td>
+                        <td>
+                            <%= book.Author %>
+                        </td>
+                        <td>
+                            <%= book.Genre %>
+                        </td>
+                        <td>
+                            <%= book.Publication_Date.toDateString() %>
+                        </td>
+                        <td>
+                            <%= book.ISBN %>
+                        </td>
+                        <td>
+                            <a href="/edit-book/<%= book.Entry_ID %>" class="action-btn edit-btn" style="text-decoration: none;">
+                                <i class='bx bx-edit-alt'></i> Edit
+                            </a>
+                            <form action="/delete-book/<%= book.Entry_ID %>" method="POST" style="display:inline;" onsubmit="return confirmDelete();">
+                                <button type="submit" class="action-btn delete-btn">
+                                    <i class='bx bx-trash'></i> Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+
+        <div class="pagination">
+            <% if (currentPage > 1) { %>
+                <a href="/?page=<%= currentPage - 1 %>">&laquo; Previous</a>
+                <!-- Link to the previous page -->
+                <% } %>
+                    <% for (let i = 1; i <= totalPages; i++) { %>
+                        <a href="/?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>">
+                            <%= i %>
+                                <!-- Link for each page number -->
+                        </a>
+                        <% } %>
+                            <% if (currentPage < totalPages) { %>
+                                <a href="/?page=<%= currentPage + 1 %>">Next &raquo;</a>
+                                <!-- Link to the next page -->
+                                <% } %>
+        </div>
+    </div>
+
+    <script>
+        // Function to confirm deletion of a book
+        function confirmDelete() {
+            return confirm("Are you sure you want to delete this book?");
+        }
+    </script>
+</body>
+
+</html>

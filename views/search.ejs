@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <link rel="stylesheet" href="/css/search.css">
+</head>
+
+<body>
+    <div class="container">
+
+        <a href="/" class="back-button">← Back to Dashboard</a>
+        <h1 class="header">Search Results of
+            <span style="color: blueviolet;">"<%= data %>"</span>
+        </h1>
+        <% if (searchList.length != 0) { %>
+
+            <table class="results-table">
+
+                <thead>
+
+                    <tr>
+                        <th>Entry ID</th>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Genre</th>
+                        <th>Publication Date</th>
+                        <th>ISBN</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% searchList.forEach(book => { %>
+                        <tr>
+                            <td>
+                                <%= book.Entry_ID %>
+                            </td>
+                            <td>
+                                <%= book.Title %>
+                            </td>
+                            <td>
+                                <%= book.Author %>
+                            </td>
+                            <td>
+                                <%= book.Genre %>
+                            </td>
+                            <td>
+                                <%= book.Publication_Date.toDateString() %>
+                            </td>
+                            <td>
+                                <%= book.ISBN %>
+                            </td>
+                        </tr>
+                        <% }); %>
+                </tbody>
+            </table>
+
+            <% } else { %>
+                <p style="text-align: center; margin-top: 10%;">No book data found!</p>
+                <% } %>
+    </div>
+</body>
+
+</html>
